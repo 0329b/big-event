@@ -55,8 +55,9 @@ public class UserController {
             claims.put("username",user.getUsername());
             String token = JwtUtil.genToken(claims);
             //将token存入redis
+             String key = user.getId().toString();
             ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-            operations.set(token,token,1, TimeUnit.HOURS);
+            operations.set(key,token,1, TimeUnit.HOURS);
             return Result.success(token);
         }
         return Result.error("密码错误");
@@ -83,7 +84,7 @@ public class UserController {
     }
     //重置密码
     @PatchMapping("/updatePwd")
-    public Result updatePwd(@RequestBody Map<String,String> params,@RequestHeader("Authorization") String token){
+    public Result updatePwd(@RequestBody Map<String,String> params){
         //获取里面元素
         String oldPwd = params.get("old_pwd");
         String newPwd = params.get("new_pwd");
@@ -108,8 +109,9 @@ public class UserController {
         String new_pwd = Md5Util.getMD5String(newPwd);
         userService.updatePwd(new_pwd);
         //删除redis令牌
+        String  id= (String)map.get("id");
         ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-        operations.getOperations().delete(token);
+        operations.getOperations().delete(id);
         return Result.success();
     }
 }
