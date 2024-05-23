@@ -22,9 +22,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
         try {
             Map<String, Object> claims = JwtUtil.parseToken(token);
+            String id = claims.get("id").toString();
             ThreadLocalUtil.set(claims);
             ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-            if (operations.get(token) == null) {
+            if (operations.get(id) == null) {
                 throw new RuntimeException();
             }
             return true;
