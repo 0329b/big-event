@@ -11,7 +11,7 @@ public class AliOssUtil {
     private static final String ENDPOINT = "https://oss-cn-beijing.aliyuncs.com";
     private static final String ACCESS_KEY_ID = "";
     private static final String SECRET_ACCESS_KEY = "";
-    private static final String BUCKET_NAME = "bigevent-hxb";
+    private static final String BUCKET_NAME = "";
 
     //上传文件,返回文件的公网访问地址
     public static String uploadFile(String objectName, InputStream inputStream){
